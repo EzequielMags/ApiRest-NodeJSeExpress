@@ -12,6 +12,7 @@
 //     res.end(rotas[req.url]) 
 // })
 
+import "dotenv/config";
 import app from "./src/app.js"
 
 const PORT = 3000
