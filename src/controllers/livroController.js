@@ -1,3 +1,4 @@
+import { autor } from "../models/Autor.js"
 import Livro from "../models/Livro.js"
 
 class LivroController {
@@ -24,10 +25,25 @@ class LivroController {
         }
     }
 
-    static async cadastrarLivro (req, res) {
+    static async listarLivrosPorEditora(req, res) {
+        const editora = req.query.editora
+
         try {
-            const novoLivro = await Livro.create(req.body)
-            res.status(201).json({ message: "livro cadastrado com sucesso", livro: novoLivro })
+            const livrosPorEditora = await Livro.find({editora})// ou pode deixar editora: editora
+            res.status(200).json(livrosPorEditora)
+        } catch (error) {
+            res.status(500).json( { message: `${error.message} - Erro ao buscar Livros por Editora`} )
+        }
+    }
+
+    static async cadastrarLivro (req, res) {
+        const novoLivro = req.body
+        
+        try {
+            const autorEncontrado = await autor.findById(novoLivro.autor)
+            const livroCompleto = {...novoLivro, autor: {...autorEncontrado._doc}} // _doc é aonde de fato esta os dados do autor
+            const livroCriado = await Livro.create(livroCompleto)
+            res.status(201).json({ message: "livro cadastrado com sucesso", livro: livroCriado })
         } catch (error) {
             res.status(500).json({ message: `${error.message} - Erro ao cadastrar Livro`})
         }
