@@ -6,6 +6,7 @@ const editoraSchema = new mongoose.Schema({
     localizacao: {type: String}
 }, { versionKey: false })
 
+
 const editora = mongoose.model("editora", editoraSchema)
 
-export {editora, editoraSchema}
+export { editora, editoraSchema}

@@ -1,4 +1,5 @@
 import { autor } from "../models/Autor.js"
+import { editora } from "../models/editora.js"
 import Livro from "../models/Livro.js"
 
 class LivroController {
@@ -41,7 +42,9 @@ class LivroController {
         
         try {
             const autorEncontrado = await autor.findById(novoLivro.autor)
-            const livroCompleto = {...novoLivro, autor: {...autorEncontrado._doc}} // _doc é aonde de fato esta os dados do autor
+            //Editora
+            const editoraEcontrada = await editora.findById(novoLivro.editora)
+            const livroCompleto = {...novoLivro,editora: {...editoraEcontrada._doc} ,autor: {...autorEncontrado._doc}} // _doc é aonde de fato esta os dados do autor
             const livroCriado = await Livro.create(livroCompleto)
             res.status(201).json({ message: "livro cadastrado com sucesso", livro: livroCriado })
         } catch (error) {
